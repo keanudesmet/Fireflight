@@ -1,21 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Fireflight</title>
+    <script type="text/javascript" src="js/three.js"></script>
+    <style>
+      #world {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: linear-gradient(#000D4A, #000D4A);;
+      }
 
-  <meta charset="UTF-8">
-  <title>Hello, fireflight_v2</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+      .buttons {
+        position: absolute;
+        margin: 1rem;
+      }
 
-  
+    </style>
+  </head>
+  <body>
+    <div id="world" allowfullscreen>
+      <div class="buttons">
+        <button type="button" id="fullscreen-button">Fullscreen</button><br/>
+        <button type="button" id="vr-button">VR</button>
+      </div>
 
-</head>
-
-<body>
-
-  <header>
-    <h1>Hello, fireflight_v2</h1>
-  </header>
-
-</body>
-
+      <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
+    </div>
+    <script src="js/three.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
 </html>
