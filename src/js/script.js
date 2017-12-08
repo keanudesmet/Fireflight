@@ -10,22 +10,23 @@ console.log(collada);
 {
   let scene, camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH, renderer, container, effect;
 
+  let gameStarted = false;
   let zRotation = 0;
   let flapspeed = 10;
   const zPos = 0;
 
   //const collisionWidth = 20;
-  const nTrees = 100;
-  const gameSpeed = Math.PI / 400;
+  const nTrees = 120;
   const zAxis = new THREE.Vector3(0, 0, 1);
   const xAxis = new THREE.Vector3(1, 0, 0);
+  const yAxis = new THREE.Vector3(0, 1, 0);
 
   const pop = new Audio(`../assets/audio/pop.mp3`);
   const slide = new Audio(`../assets/audio/slide.aiff`);
   //const opus = new Audio(`../assets/audio/opus.mp3`);
 
 
-  console.log(gameSpeed, xAxis);
+  //console.log(gameSpeed, xAxis);
 
 
   let vr = false;
@@ -39,7 +40,7 @@ console.log(collada);
     pink: 0xF5986E,
     brownDark: 0x23190f,
     blue: 0x68c3c0,
-    shamrock: 0x38FD99
+    earth: 0x65249F
   };
 
   const createScene = () => {
@@ -97,16 +98,17 @@ console.log(collada);
     fireflyLight = new THREE.PointLight(0xFC6520, 1.5);
     fireflyLight.position.set(0, 100, zPos);
     scene.add(fireflyLight);
+
   };
 
   class Earth {
     constructor() {
-      const geom = new THREE.SphereGeometry(1000, 50, 50);
+      const geom = new THREE.DodecahedronGeometry(1010, 2);
       geom.applyMatrix(new THREE.Matrix4().makeRotationZ(- Math.PI / 2));
 
       const mat =
       new THREE.MeshPhongMaterial({
-        color: Colors.shamrock,
+        color: Colors.earth,
         flatShading: true,
       });
 
@@ -219,21 +221,12 @@ console.log(collada);
   };
 
 
-
-
-  const loop = () => {
-
-
-
+  const collisionDetection = () => {
     forrest.mesh.children.forEach(object => {
       const position = new THREE.Vector3();
       position.setFromMatrixPosition(object.children[0].matrixWorld);
       if (position.y > - .2) {
-        // if (position.x > - collisionWidth && position.x < collisionWidth) {
-        //   if (position.z > 0 && position.z < collisionWidth) {
         pop.play();
-        //   }
-        // }
       }
 
       if (position.y > - .5) {
@@ -241,7 +234,22 @@ console.log(collada);
       }
 
     });
+  };
 
+  //const divider = 1000;
+
+  let gameSpeed = 0.005;
+  const yFactor = 0.0003;
+
+  const loop = () => {
+
+    gameSpeed += 0.000001;
+    gameSpeed += 0.0000001;
+
+    if (gameStarted === true) {
+      collisionDetection();
+
+    }
 
     const leftWingAngle = fireflyInstance.children[1].rotation.z;
 
@@ -261,6 +269,9 @@ console.log(collada);
 
     rotateAroundWorldAxis(earth.mesh, zAxis, Math.PI * zRotation);
     rotateAroundWorldAxis(forrest.mesh, zAxis, Math.PI * zRotation);
+
+    rotateAroundWorldAxis(earth.mesh, yAxis, Math.PI * yFactor);
+    rotateAroundWorldAxis(forrest.mesh, yAxis, Math.PI * yFactor);
 
     camera.rotation.z = zRotation * - 100;
 
@@ -327,6 +338,8 @@ console.log(collada);
     } else {
       container.webkitRequestFullscreen();
       fullscreen = true;
+      gameStarted = true;
+
       screen.orientation.lock(`landscape-primary`);
       pop.play();
       pop.pause();
