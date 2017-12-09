@@ -14,6 +14,7 @@ console.log(collada);
   let zRotation = 0;
   let flapspeed = 10;
   const zPos = 0;
+  let gameOver = false;
 
   //const collisionWidth = 20;
   const nTrees = 120;
@@ -226,7 +227,9 @@ console.log(collada);
       const position = new THREE.Vector3();
       position.setFromMatrixPosition(object.children[0].matrixWorld);
       if (position.y > - .2) {
-        pop.play();
+        //pop.play();
+        gameOver = true;
+
       }
 
       if (position.y > - .5) {
@@ -236,19 +239,32 @@ console.log(collada);
     });
   };
 
+
+
   //const divider = 1000;
 
-  let gameSpeed = 0.005;
-  const yFactor = 0.0003;
+  let gameSpeed = 0.01;
+  let yFactor = 0.0003;
+
+  // const restart = () => {
+  //   score = 0;
+  //   gameSpeed = 0.005;
+  //   yFactor = 0.0003;
+  //   createForrest();
+  // };
 
   const loop = () => {
 
-    gameSpeed += 0.000001;
-    gameSpeed += 0.0000001;
+    if (gameOver === true) {
+      gameSpeed = 0;
+      flapspeed = 0;
+      fireflyInstance.visible = false;
+    }
 
     if (gameStarted === true) {
       collisionDetection();
-
+      gameSpeed += 0.000005;
+      yFactor += 0.0000001;
     }
 
     const leftWingAngle = fireflyInstance.children[1].rotation.z;
@@ -263,12 +279,13 @@ console.log(collada);
       flapspeed = - 50;
     }
 
+    if (gameOver === false) {
+      rotateAroundWorldAxis(earth.mesh, xAxis, gameSpeed);
+      rotateAroundWorldAxis(forrest.mesh, xAxis, gameSpeed);
 
-    rotateAroundWorldAxis(earth.mesh, xAxis, gameSpeed);
-    rotateAroundWorldAxis(forrest.mesh, xAxis, gameSpeed);
-
-    rotateAroundWorldAxis(earth.mesh, zAxis, Math.PI * zRotation);
-    rotateAroundWorldAxis(forrest.mesh, zAxis, Math.PI * zRotation);
+      rotateAroundWorldAxis(earth.mesh, zAxis, Math.PI * zRotation);
+      rotateAroundWorldAxis(forrest.mesh, zAxis, Math.PI * zRotation);
+    }
 
     rotateAroundWorldAxis(earth.mesh, yAxis, Math.PI * yFactor);
     rotateAroundWorldAxis(forrest.mesh, yAxis, Math.PI * yFactor);
@@ -316,21 +333,32 @@ console.log(collada);
   console.log(vr);
 
   const onVrButtonClick = e => {
-    console.log(`toggleVr`);
+    // console.log(`toggleVr`);
     console.log(e);
-    if (vr === true) {
-      vr = false;
-      renderer.setSize(WIDTH, HEIGHT);
-    } else {
-      vr = true;
-    }
+    // if (vr === true) {
+    //   vr = false;
+    //   renderer.setSize(WIDTH, HEIGHT);
+    // } else {
+    //   vr = true;
+    // }
+    document.querySelector(`.startscreen`).classList.add(`hidden`);
+
+    container.webkitRequestFullscreen();
+    fullscreen = true;
+    vr = true;
+    gameStarted = true;
+
+    screen.orientation.lock(`landscape-primary`);
+    pop.play();
+    pop.pause();
   };
 
   const vrButton = document.getElementById(`vr-button`);
   vrButton.addEventListener(`click`, onVrButtonClick);
 
 
-  const onFullscreenButtonClick = e => {
+  const onStartButtonClick = e => {
+    document.querySelector(`.startscreen`).classList.add(`hidden`);
     console.log(e);
     if (fullscreen === true) {
       document.webkitExitFullscreen();
@@ -348,7 +376,7 @@ console.log(collada);
   };
 
   const fullscreenButton = document.getElementById(`fullscreen-button`);
-  fullscreenButton.addEventListener(`click`, onFullscreenButtonClick);
+  fullscreenButton.addEventListener(`click`, onStartButtonClick);
 
   document.addEventListener(`keydown`, onDocumentKeyDown, false);
   function onDocumentKeyDown(event) {
