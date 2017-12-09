@@ -10,11 +10,15 @@ console.log(collada);
 {
   let scene, camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH, renderer, container, effect;
 
+  let gameSpeed = 0.01;
+  let yFactor = 0.0003;
+
   let gameStarted = false;
   let zRotation = 0;
   let flapspeed = 10;
   const zPos = 0;
   let gameOver = false;
+  let score = 0;
 
   //const collisionWidth = 20;
   const nTrees = 120;
@@ -239,12 +243,43 @@ console.log(collada);
     });
   };
 
+  const gameOverState = () => {
+    gameStarted = false;
+    gameSpeed = 0;
+    flapspeed = 0;
+    fireflyInstance.visible = false;
+    document.querySelector(`.endscreen`).classList.remove(`hidden`);
+  };
 
+
+  const countDown = s => {
+
+    let passed = 0;
+    document.querySelector(`.countdown`).innerHTML = s - passed;
+
+    if (passed < s) {
+      setInterval(function() {
+        passed += 1;
+        document.querySelector(`.countdown`).innerHTML = s - passed;
+        if (passed === s) {
+          gameStarted = true;
+          document.querySelector(`.countdown`).innerHTML = ``;
+        }
+      }, 1000);
+    }
+
+    if (passed > s) {
+      document.querySelector(`.countdown`).classList.add(`hidden`);
+
+    }
+
+
+
+    //requestAnimationFrame(countDown);
+  };
 
   //const divider = 1000;
 
-  let gameSpeed = 0.01;
-  let yFactor = 0.0003;
 
   // const restart = () => {
   //   score = 0;
@@ -254,18 +289,26 @@ console.log(collada);
   // };
 
   const loop = () => {
-
-    if (gameOver === true) {
-      gameSpeed = 0;
-      flapspeed = 0;
+    if (gameStarted === false) {
       fireflyInstance.visible = false;
     }
 
     if (gameStarted === true) {
+      score += 1;
+      document.querySelector(`.running-score`).innerHTML = score;
       collisionDetection();
       gameSpeed += 0.000005;
       yFactor += 0.0000001;
+      fireflyInstance.visible = true;
+
     }
+
+
+
+    if (gameOver === true) {
+      gameOverState();
+    }
+
 
     const leftWingAngle = fireflyInstance.children[1].rotation.z;
 
@@ -346,7 +389,7 @@ console.log(collada);
     container.webkitRequestFullscreen();
     fullscreen = true;
     vr = true;
-    gameStarted = true;
+    countDown(10);
 
     screen.orientation.lock(`landscape-primary`);
     pop.play();
@@ -366,8 +409,7 @@ console.log(collada);
     } else {
       container.webkitRequestFullscreen();
       fullscreen = true;
-      gameStarted = true;
-
+      countDown(5);
       screen.orientation.lock(`landscape-primary`);
       pop.play();
       pop.pause();
