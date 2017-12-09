@@ -25,34 +25,53 @@
   </head>
   <body>
     <div class="world" id="world" allowfullscreen>
-      <div class="score-bar">
-        <h1 class="running-score"></h1>
-        <h1 class="countdown"></h1>
+      <div class="vr-content-left">
+        <div class="score-bar">
+          <h1 class="running-score"></h1>
+        </div>
+        <div class="countdownscreen">
+          <h1 class="countdown"></h1>
+        </div>
+        <div class="endscreen hidden">
+          <div class="centerblock">
+            <h1 class="endscore"></h1><br />
+            <h1 class="title">u dead boi</h1><br />
+            <h1 class="action-text">REST IN PIECES</h1>
+          </div>
+        </div>
       </div>
+
+      <div class="vr-content-right hidden">
+        <div class="score-bar">
+          <h1 class="running-score"></h1>
+        </div>
+        <div class="countdownscreen">
+          <h1 class="countdown"></h1>
+        </div>
+
+        <div class="endscreen hidden">
+          <div class="centerblock">
+            <h1 class="endscore"></h1><br />
+            <h1 class="title">u dead boi</h1><br />
+            <h1 class="action-text">REST IN PIECES</h1>
+
+          </div>
+        </div>
+      </div>
+
       <div class="startscreen">
         <div class="centerblock">
           <h1 class="title">fireflight</h1><br />
-          <label for="fullscreen-button" class="action-text">PLAY GAME</label>
+          <label for="fullscreen-button" class="action-text">PLAY NORMAL</label>
           <input type="button" class="button" id="fullscreen-button"></input><br/>
-          <label for="vr-button" class="action-text play-game-vr">PLAY IN VR <br/>
+
+          <label for="vr-button" class="action-text play-game-vr">PLAY IN VR<br/>
             <img class="vr-logo" src="./assets/svg/VR-logo.svg"/>
           </br/></label>
           <button type="button" class="button" id="vr-button"></button>
         </div>
       </div>
-      <div class="endscreen hidden">
-        <div class="centerblock">
-          <h1 class="title">u ded boii</h1><br />
-          <label for="fullscreen-button" class="action-text">RIP IN PIECES</label>
-          <input type="button" class="button" id="fullscreen-button"></input><br/>
-          <!-- <label for="fullscreen-button" class="action-text">PLAY GAME</label>
-          <input type="button" class="button" id="fullscreen-button"></input><br/>
-          <label for="vr-button" class="action-text play-game-vr">PLAY IN VR <br/>
-            <img class="vr-logo" src="./assets/svg/VR-logo.svg"/>
-          </br/></label>
-          <button type="button" class="button" id="vr-button"></button> -->
-        </div>
-      </div>
+
       <a-box position="-1 0.5 -3" rotation="0 45 0" color="#4CC3D9"></a-box>
     </div>
     <script src="js/three.min.js"></script>

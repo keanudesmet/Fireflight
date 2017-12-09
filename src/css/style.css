@@ -23,6 +23,8 @@ h1 {
   position: absolute;
   width: 100%;
   height: 100%;
+  left: 0;
+  top: 0;
   overflow: hidden;
   background-color: #000d4a;
 }
@@ -97,15 +99,67 @@ h1 {
 .score-bar {
   width: 100%;
   position: absolute;
+  display: flex;
+  justify-content: center;
 }
 
 .running-score {
   color: white;
   font-family: 'Rozha One';
-  font-size: 2em;
-  text-align: center;
-
+  font-size: 5rem;
   margin-top: 3rem;
+  width: 8rem;
+}
+
+.countdownscreen {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.countdown {
+  color: white;
+  font-family: 'Rozha One';
+  font-size: 10em;
+  margin-top: 3rem;
+}
+
+.endscore {
+  color: white;
+  text-align: center;
+  font-family: 'Rozha One';
+  font-size: 7em;
+}
+
+.vr-content-left {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.vr-content-right {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.vr-content-active {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+}
+
+.vr-left {
+  width: 50%;
+  margin-right: 50%;
+}
+
+.vr-right {
+  width: 50%;
+  margin-left: 50%;
 }
 
 .hidden {

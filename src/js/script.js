@@ -10,7 +10,7 @@ console.log(collada);
 {
   let scene, camera, fieldOfView, aspectRatio, nearPlane, farPlane, HEIGHT, WIDTH, renderer, container, effect;
 
-  let gameSpeed = 0.01;
+  let gameSpeed = 0.005;
   let yFactor = 0.0003;
 
   let gameStarted = false;
@@ -18,6 +18,7 @@ console.log(collada);
   let flapspeed = 10;
   const zPos = 0;
   let gameOver = false;
+  //let collision = false;
   let score = 0;
 
   //const collisionWidth = 20;
@@ -231,8 +232,9 @@ console.log(collada);
       const position = new THREE.Vector3();
       position.setFromMatrixPosition(object.children[0].matrixWorld);
       if (position.y > - .2) {
-        //pop.play();
+        pop.play();
         gameOver = true;
+        //collision = true;
 
       }
 
@@ -248,7 +250,24 @@ console.log(collada);
     gameSpeed = 0;
     flapspeed = 0;
     fireflyInstance.visible = false;
-    document.querySelector(`.endscreen`).classList.remove(`hidden`);
+
+    const $endScreen = document.querySelectorAll(`.endscreen`);
+
+    $endScreen.forEach(e => {
+      e.classList.remove(`hidden`);
+    });
+
+    const $scoreBar = document.querySelectorAll(`.score-bar`);
+
+    $scoreBar.forEach(e => {
+      e.classList.add(`hidden`);
+    });
+
+    const $endScore = document.querySelectorAll(`.endscore`);
+
+    $endScore.forEach(e => {
+      e.innerHTML = score;
+    });
   };
 
 
@@ -257,24 +276,26 @@ console.log(collada);
     let passed = 0;
     document.querySelector(`.countdown`).innerHTML = s - passed;
 
+    const $countDown = document.querySelectorAll(`.countdown`);
+
+    $countDown.forEach(e => {
+      e.innerHTML = s - passed;
+    });
+
     if (passed < s) {
       setInterval(function() {
         passed += 1;
-        document.querySelector(`.countdown`).innerHTML = s - passed;
+        $countDown.forEach(e => {
+          e.innerHTML = s - passed;
+        });
         if (passed === s) {
           gameStarted = true;
-          document.querySelector(`.countdown`).innerHTML = ``;
+          $countDown.forEach(e => {
+            e.classList.add(`hidden`);
+          });
         }
       }, 1000);
     }
-
-    if (passed > s) {
-      document.querySelector(`.countdown`).classList.add(`hidden`);
-
-    }
-
-
-
     //requestAnimationFrame(countDown);
   };
 
@@ -295,7 +316,11 @@ console.log(collada);
 
     if (gameStarted === true) {
       score += 1;
-      document.querySelector(`.running-score`).innerHTML = score;
+      const runningScore = document.querySelectorAll(`.running-score`);
+
+      runningScore.forEach(scoreField => {
+        scoreField.innerHTML = score;
+      });
       collisionDetection();
       gameSpeed += 0.000005;
       yFactor += 0.0000001;
@@ -360,7 +385,9 @@ console.log(collada);
   function handleOrientation(event) {
     beta = event.beta;
     gamma = event.gamma;
-    pop.play();
+
+
+    //pop.play();
 
     if (gamma < 0) {
       zRotation = beta / 10000;
@@ -385,7 +412,9 @@ console.log(collada);
     //   vr = true;
     // }
     document.querySelector(`.startscreen`).classList.add(`hidden`);
-
+    document.querySelector(`.vr-content-left`).classList.add(`vr-left`);
+    document.querySelector(`.vr-content-right`).classList.add(`vr-right`);
+    document.querySelector(`.vr-content-right`).classList.remove(`hidden`);
     container.webkitRequestFullscreen();
     fullscreen = true;
     vr = true;
