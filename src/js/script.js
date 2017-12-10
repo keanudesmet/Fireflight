@@ -516,7 +516,12 @@ console.log(collada);
     document.querySelector(`.vr-content-left`).classList.add(`vr-left`);
     document.querySelector(`.vr-content-right`).classList.add(`vr-right`);
     document.querySelector(`.vr-content-right`).classList.remove(`hidden`);
-    document.querySelector(`.auto-restart`).classList.remove(`hidden`);
+    const autoRestart = document.querySelectorAll(`.auto-restart`);
+
+    autoRestart.forEach(e => {
+      e.classList.remove(`hidden`);
+    });
+
     container.webkitRequestFullscreen();
     fullscreen = true;
     vr = true;

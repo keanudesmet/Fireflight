@@ -67,16 +67,16 @@ h1 {
   color: white;
   text-align: center;
   font-family: 'Rozha One';
-  font-size: 10rem;
+  font-size: 5rem;
 
 }
 
 .action-text {
-  margin-top: 5rem;
+  margin-top: 3rem;
   color: white;
   font-family: Montserrat;
 
-  font-size: 2rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
 }
 
@@ -107,8 +107,8 @@ h1 {
 .running-score {
   color: white;
   font-family: 'Rozha One';
-  font-size: 5rem;
-  margin-top: 3rem;
+  font-size: 2rem;
+  margin-top: 1.5rem;
   width: 8rem;
 }
 
@@ -132,7 +132,7 @@ h1 {
   color: white;
   text-align: center;
   font-family: 'Rozha One';
-  font-size: 7em;
+  font-size: 3em;
 }
 
 .vr-content-left {
@@ -164,7 +164,7 @@ h1 {
 }
 
 .home-button-block {
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
 
 .hidden {
