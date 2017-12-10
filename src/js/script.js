@@ -36,8 +36,10 @@ console.log(collada);
   const yAxis = new THREE.Vector3(0, 1, 0);
 
   const pop = new Audio(`../assets/audio/pop.mp3`);
+  const leftSlide = new Audio(`../assets/audio/passby_left.mp3`);
+  const rightSlide = new Audio(`../assets/audio/passby_right.mp3`);
   //const slide = new Audio(`../assets/audio/slide.aiff`);
-  //const opus = new Audio(`../assets/audio/opus.mp3`);
+  const opus = new Audio(`../assets/audio/opus.mp3`);
 
 
   //console.log(gameSpeed, xAxis);
@@ -246,7 +248,12 @@ console.log(collada);
 
       }
 
-      if (position.y > - .5) {
+      if (position.y > - 2 && position.y < - .2) {
+        if (position.x > 0) {
+          rightSlide.play();
+        } else {
+          leftSlide.play();
+        }
         console.log(`close one`);
       }
 
@@ -278,37 +285,41 @@ console.log(collada);
       e.innerHTML = score;
     });
 
+    if (vr === true) {
+      const $restartCountdown = document.querySelectorAll(`.auto-restart`);
 
-    const $restartCountdown = document.querySelectorAll(`.auto-restart`);
+      $restartCountdown.forEach(e => {
+        e.classList.remove(`hidden`);
+        e.innerHTML = `game will restart in 5 seconds`;
 
-    $restartCountdown.forEach(e => {
-      e.classList.remove(`hidden`);
-      e.innerHTML = `game will restart in 5 seconds`;
+      });
 
-    });
+      restartStarted = true;
 
-    restartStarted = true;
-
-    if (restartTime > 0) {
-      const restartInterval = setInterval(function() {
-        restartTime -= 1;
-        $restartCountdown.forEach(e => {
-          e.innerHTML = `game will restart in ${restartTime} seconds`;
-        });
-        if (restartTime === 0) {
-          restartTime = 5;
+      if (restartTime > 0) {
+        const restartInterval = setInterval(function() {
+          restartTime -= 1;
           $restartCountdown.forEach(e => {
-            e.classList.add(`hidden`);
+            e.innerHTML = `game will restart in ${restartTime} seconds`;
           });
-          clearInterval(restartInterval);
+          if (restartTime === 0) {
+            restartTime = 5;
+            $restartCountdown.forEach(e => {
+              e.classList.add(`hidden`);
+            });
+            clearInterval(restartInterval);
 
-        }
-      }, 1000);
+          }
+        }, 1000);
+      }
+      setTimeout(restart, 5000);
     }
 
+    // if (vr === false) {
+    //   const $restartButtonLabel = document.querySelector(`.restart-button`);
+    //   $restartButtonLabel.classList.remove(`hidden`);
+    // }
 
-
-    setTimeout(restart, 5000);
 
 
   };
@@ -434,12 +445,21 @@ console.log(collada);
 
       rotateAroundWorldAxis(earth.mesh, zAxis, Math.PI * zRotation);
       rotateAroundWorldAxis(forrest.mesh, zAxis, Math.PI * zRotation);
+
+      rotateAroundWorldAxis(earth.mesh, yAxis, Math.PI * yFactor);
+      rotateAroundWorldAxis(forrest.mesh, yAxis, Math.PI * yFactor);
     }
 
-    rotateAroundWorldAxis(earth.mesh, yAxis, Math.PI * yFactor);
-    rotateAroundWorldAxis(forrest.mesh, yAxis, Math.PI * yFactor);
+    if (fullscreen === false && gameStarted === false) {
+      camera.rotation.z = 0;
+    } else {
+      camera.rotation.z = zRotation * - 100;
 
-    camera.rotation.z = zRotation * - 100;
+    }
+
+
+
+
 
     fireflyInstance.rotation.z = zRotation * 300;
 
@@ -505,10 +525,28 @@ console.log(collada);
     screen.orientation.lock(`landscape-primary`);
     pop.play();
     pop.pause();
+    leftSlide.play();
+    leftSlide.pause();
+    rightSlide.play();
+    rightSlide.pause();
+
+    opus.play();
   };
 
   const vrButton = document.getElementById(`vr-button`);
   vrButton.addEventListener(`click`, onVrButtonClick);
+
+
+  const $restartButton = document.getElementById(`restart-button`);
+
+  $restartButton.addEventListener(`click`, onRestartButtonClick);
+
+  const onRestartButtonClick = e => {
+    console.log(e);
+    //console.log(`kekhundd`);
+    restartStarted = true;
+    restart();
+  };
 
 
   const onStartButtonClick = e => {
@@ -524,9 +562,16 @@ console.log(collada);
       screen.orientation.lock(`landscape-primary`);
       pop.play();
       pop.pause();
+      leftSlide.play();
+      leftSlide.pause();
+      rightSlide.play();
+      rightSlide.pause();
+
+      opus.play();
     }
 
   };
+
 
   const fullscreenButton = document.getElementById(`fullscreen-button`);
   fullscreenButton.addEventListener(`click`, onStartButtonClick);
