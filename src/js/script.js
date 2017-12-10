@@ -20,6 +20,14 @@ console.log(collada);
   let gameOver = false;
   //let collision = false;
   let score = 0;
+  let restartStarted = false;
+  let passed = 0;
+  let restartTime = 5;
+
+  //let passedGameOver = 0;
+
+
+
 
   //const collisionWidth = 20;
   const nTrees = 120;
@@ -28,7 +36,7 @@ console.log(collada);
   const yAxis = new THREE.Vector3(0, 1, 0);
 
   const pop = new Audio(`../assets/audio/pop.mp3`);
-  const slide = new Audio(`../assets/audio/slide.aiff`);
+  //const slide = new Audio(`../assets/audio/slide.aiff`);
   //const opus = new Audio(`../assets/audio/opus.mp3`);
 
 
@@ -239,13 +247,14 @@ console.log(collada);
       }
 
       if (position.y > - .5) {
-        slide.play();
+        console.log(`close one`);
       }
 
     });
   };
 
   const gameOverState = () => {
+    gameOver = false;
     gameStarted = false;
     gameSpeed = 0;
     flapspeed = 0;
@@ -268,12 +277,45 @@ console.log(collada);
     $endScore.forEach(e => {
       e.innerHTML = score;
     });
+
+
+    const $restartCountdown = document.querySelectorAll(`.auto-restart`);
+
+    $restartCountdown.forEach(e => {
+      e.classList.remove(`hidden`);
+      e.innerHTML = `game will restart in 5 seconds`;
+
+    });
+
+    restartStarted = true;
+
+    if (restartTime > 0) {
+      const restartInterval = setInterval(function() {
+        restartTime -= 1;
+        $restartCountdown.forEach(e => {
+          e.innerHTML = `game will restart in ${restartTime} seconds`;
+        });
+        if (restartTime === 0) {
+          restartTime = 5;
+          $restartCountdown.forEach(e => {
+            e.classList.add(`hidden`);
+          });
+          clearInterval(restartInterval);
+
+        }
+      }, 1000);
+    }
+
+
+
+    setTimeout(restart, 5000);
+
+
   };
 
 
   const countDown = s => {
 
-    let passed = 0;
     document.querySelector(`.countdown`).innerHTML = s - passed;
 
     const $countDown = document.querySelectorAll(`.countdown`);
@@ -282,19 +324,29 @@ console.log(collada);
       e.innerHTML = s - passed;
     });
 
+
     if (passed < s) {
-      setInterval(function() {
+      const countdownInterval = setInterval(function() {
         passed += 1;
         $countDown.forEach(e => {
           e.innerHTML = s - passed;
         });
         if (passed === s) {
+          passed = 0;
           gameStarted = true;
+          const $scoreBar = document.querySelectorAll(`.score-bar`);
+          $scoreBar.forEach(e => {
+            e.classList.remove(`hidden`);
+          });
+
           $countDown.forEach(e => {
             e.classList.add(`hidden`);
           });
+          clearInterval(countdownInterval);
+
         }
       }, 1000);
+
     }
     //requestAnimationFrame(countDown);
   };
@@ -302,12 +354,41 @@ console.log(collada);
   //const divider = 1000;
 
 
-  // const restart = () => {
-  //   score = 0;
-  //   gameSpeed = 0.005;
-  //   yFactor = 0.0003;
-  //   createForrest();
-  // };
+  const restart = () => {
+
+    if (restartStarted === true) {
+
+      const $endScreen = document.querySelectorAll(`.endscreen`);
+
+      $endScreen.forEach(e => {
+        e.classList.add(`hidden`);
+      });
+
+      const $countDown = document.querySelectorAll(`.countdown`);
+
+      $countDown.forEach(e => {
+        e.classList.remove(`hidden`);
+      });
+
+      const $scoreBar = document.querySelectorAll(`.score-bar`);
+
+      $scoreBar.forEach(e => {
+        e.classList.add(`hidden`);
+      });
+
+      gameSpeed = 0.005;
+      yFactor = 0.0003;
+      gameStarted = false;
+      zRotation = 0;
+      flapspeed = 10;
+      gameOver = false;
+      score = 0;
+      restartStarted = false;
+      passed = 0;
+      countDown(3);
+    }
+
+  };
 
   const loop = () => {
     if (gameStarted === false) {
@@ -415,6 +496,7 @@ console.log(collada);
     document.querySelector(`.vr-content-left`).classList.add(`vr-left`);
     document.querySelector(`.vr-content-right`).classList.add(`vr-right`);
     document.querySelector(`.vr-content-right`).classList.remove(`hidden`);
+    document.querySelector(`.auto-restart`).classList.remove(`hidden`);
     container.webkitRequestFullscreen();
     fullscreen = true;
     vr = true;
