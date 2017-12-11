@@ -315,14 +315,20 @@ console.log(collada);
       setTimeout(restart, 5000);
     }
 
-    // if (vr === false) {
-    //   const $restartButtonLabel = document.querySelector(`.restart-button`);
-    //   $restartButtonLabel.classList.remove(`hidden`);
-    // }
+    if (vr === false) {
+      console.log(`fuaaark`);
+      const restartButton1 = document.querySelector(`.restart-button`);
+      restartButton1.classList.remove(`hidden`);
+      console.log(restartButton1);
+
+      restartButton1.addEventListener(`click`, onRestartButtonClick);
 
 
+
+    }
 
   };
+
 
 
   const countDown = s => {
@@ -458,9 +464,6 @@ console.log(collada);
     }
 
 
-
-
-
     fireflyInstance.rotation.z = zRotation * 300;
 
     if (zRotation > 0) {
@@ -541,17 +544,13 @@ console.log(collada);
   const vrButton = document.getElementById(`vr-button`);
   vrButton.addEventListener(`click`, onVrButtonClick);
 
-
-  const $restartButton = document.getElementById(`restart-button`);
-
-  $restartButton.addEventListener(`click`, onRestartButtonClick);
-
   const onRestartButtonClick = e => {
     console.log(e);
-    //console.log(`kekhundd`);
+    console.log(`kekhundd`);
     restartStarted = true;
     restart();
   };
+
 
 
   const onStartButtonClick = e => {
@@ -572,7 +571,7 @@ console.log(collada);
       rightSlide.play();
       rightSlide.pause();
 
-      opus.play();
+      //opus.play();
     }
 
   };
