@@ -39,7 +39,7 @@ console.log(collada);
   const leftSlide = new Audio(`../assets/audio/passby_left.mp3`);
   const rightSlide = new Audio(`../assets/audio/passby_right.mp3`);
   //const slide = new Audio(`../assets/audio/slide.aiff`);
-  const opus = new Audio(`../assets/audio/opus.mp3`);
+  //const opus = new Audio(`../assets/audio/opus.mp3`);
 
 
   //console.log(gameSpeed, xAxis);
@@ -538,7 +538,7 @@ console.log(collada);
     rightSlide.play();
     rightSlide.pause();
 
-    opus.play();
+    //opus.play();
   };
 
   const vrButton = document.getElementById(`vr-button`);
