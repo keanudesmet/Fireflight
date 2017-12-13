@@ -68,7 +68,15 @@ h1 {
   text-align: center;
   font-family: 'Rozha One';
   font-size: 5rem;
+  margin: 1rem;
 
+}
+
+.start-title {
+  color: white;
+  text-align: center;
+  font-family: 'Rozha One';
+  font-size: 10rem;
 }
 
 .action-text {
@@ -165,6 +173,12 @@ h1 {
 
 .home-button-block {
   margin-top: 3rem;
+}
+
+.restart-button {
+  color: black;
+  background: white;
+  padding: 1rem 2rem;
 }
 
 .hidden {

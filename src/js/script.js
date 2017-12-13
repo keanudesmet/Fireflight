@@ -23,6 +23,7 @@ console.log(collada);
   let restartStarted = false;
   let passed = 0;
   let restartTime = 5;
+  let countdownStarted = false;
 
   //let passedGameOver = 0;
 
@@ -38,7 +39,6 @@ console.log(collada);
   const pop = new Audio(`../assets/audio/pop.mp3`);
   const leftSlide = new Audio(`../assets/audio/passby_left.mp3`);
   const rightSlide = new Audio(`../assets/audio/passby_right.mp3`);
-  //const slide = new Audio(`../assets/audio/slide.aiff`);
   //const opus = new Audio(`../assets/audio/opus.mp3`);
 
 
@@ -262,6 +262,7 @@ console.log(collada);
 
   const gameOverState = () => {
     gameOver = false;
+    countdownStarted = false;
     gameStarted = false;
     gameSpeed = 0;
     flapspeed = 0;
@@ -316,7 +317,6 @@ console.log(collada);
     }
 
     if (vr === false) {
-      console.log(`fuaaark`);
       const restartButton1 = document.querySelector(`.restart-button`);
       restartButton1.classList.remove(`hidden`);
       console.log(restartButton1);
@@ -332,6 +332,8 @@ console.log(collada);
 
 
   const countDown = s => {
+
+    countdownStarted = true;
 
     document.querySelector(`.countdown`).innerHTML = s - passed;
 
@@ -421,7 +423,7 @@ console.log(collada);
       });
       collisionDetection();
       gameSpeed += 0.000005;
-      yFactor += 0.0000001;
+      yFactor += 0.000000243;
       fireflyInstance.visible = true;
 
     }
@@ -449,12 +451,15 @@ console.log(collada);
       rotateAroundWorldAxis(earth.mesh, xAxis, gameSpeed);
       rotateAroundWorldAxis(forrest.mesh, xAxis, gameSpeed);
 
-      rotateAroundWorldAxis(earth.mesh, zAxis, Math.PI * zRotation);
-      rotateAroundWorldAxis(forrest.mesh, zAxis, Math.PI * zRotation);
-
-      rotateAroundWorldAxis(earth.mesh, yAxis, Math.PI * yFactor);
-      rotateAroundWorldAxis(forrest.mesh, yAxis, Math.PI * yFactor);
+      if (countdownStarted === true) {
+        rotateAroundWorldAxis(earth.mesh, zAxis, Math.PI * zRotation);
+        rotateAroundWorldAxis(forrest.mesh, zAxis, Math.PI * zRotation);
+      }
     }
+
+    rotateAroundWorldAxis(earth.mesh, yAxis, Math.PI * yFactor);
+    rotateAroundWorldAxis(forrest.mesh, yAxis, Math.PI * yFactor);
+
 
     if (fullscreen === false && gameStarted === false) {
       camera.rotation.z = 0;
@@ -546,7 +551,6 @@ console.log(collada);
 
   const onRestartButtonClick = e => {
     console.log(e);
-    console.log(`kekhundd`);
     restartStarted = true;
     restart();
   };
