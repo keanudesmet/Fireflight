@@ -39,7 +39,7 @@ console.log(collada);
   const pop = new Audio(`../assets/audio/pop.mp3`);
   const leftSlide = new Audio(`../assets/audio/passby_left.mp3`);
   const rightSlide = new Audio(`../assets/audio/passby_right.mp3`);
-  //const opus = new Audio(`../assets/audio/opus.mp3`);
+  const prokofiev = new Audio(`../assets/audio/Prokofiev.mp3`);
 
 
   //console.log(gameSpeed, xAxis);
@@ -251,10 +251,12 @@ console.log(collada);
       if (position.y > - 2 && position.y < - .2) {
         if (position.x > 0) {
           rightSlide.play();
+          console.log(`close one right`);
         } else {
           leftSlide.play();
+          console.log(`close one left`);
+
         }
-        console.log(`close one`);
       }
 
     });
@@ -350,7 +352,13 @@ console.log(collada);
         $countDown.forEach(e => {
           e.innerHTML = s - passed;
         });
+        if ((s - passed) === 4) {
+          prokofiev.play();
+          prokofiev.currentTime = 1;
+        }
         if (passed === s) {
+          //prokofiev.play();
+
           passed = 0;
           gameStarted = true;
           const $scoreBar = document.querySelectorAll(`.score-bar`);
@@ -376,6 +384,7 @@ console.log(collada);
   const restart = () => {
 
     if (restartStarted === true) {
+      prokofiev.currentTime = 2;
 
       const $endScreen = document.querySelectorAll(`.endscreen`);
 
@@ -543,7 +552,8 @@ console.log(collada);
     rightSlide.play();
     rightSlide.pause();
 
-    //opus.play();
+    prokofiev.play();
+    prokofiev.pause();
   };
 
   const vrButton = document.getElementById(`vr-button`);
@@ -575,7 +585,8 @@ console.log(collada);
       rightSlide.play();
       rightSlide.pause();
 
-      //opus.play();
+      prokofiev.play();
+      prokofiev.pause();
     }
 
   };
